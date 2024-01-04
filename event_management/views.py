@@ -1,8 +1,8 @@
 from rest_framework import generics
-from .models import CustomUser, UserGroup, Event,EventInvitation
+from .models import CustomUser, UserGroup, Event,EventInvitation,Product,CartItem
 from rest_framework.response import Response
 from rest_framework import permissions
-from .serializers import CustomUserSerializer,UserGroupSerializer, EventSerializer, EventInvitationSerializer
+from .serializers import CustomUserSerializer,UserGroupSerializer, EventSerializer, EventInvitationSerializer,ProductSerializer,CartItemSerializer
 
 class CustomUserListCreateView(generics.ListCreateAPIView):
     queryset = CustomUser.objects.all()
@@ -41,6 +41,14 @@ class FreeuserView(generics.ListAPIView):
             free_users = Event.objects.all()
 
         return free_users
+
+class ProductList(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class CartItemList(generics.ListCreateAPIView):
+    queryset = CartItem.objects.all()
+    serializer_class = CartItemSerializer
 
 
 

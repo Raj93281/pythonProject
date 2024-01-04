@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, UserGroup, Event, EventInvitation
+from .models import CustomUser, UserGroup, Event, EventInvitation, Product, CartItem
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -22,3 +22,15 @@ class EventInvitationSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventInvitation
         fields = ['event', 'invited_user', 'response']
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+class CartItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
+    class Meta:
+        model = CartItem
+        fields = '__all__'
