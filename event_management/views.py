@@ -1,4 +1,5 @@
 from rest_framework import generics
+from django.shortcuts import render
 from .models import CustomUser, UserGroup, Event,EventInvitation,Product,CartItem
 from rest_framework.response import Response
 from rest_framework import permissions
@@ -49,6 +50,11 @@ class ProductList(generics.ListCreateAPIView):
 class CartItemList(generics.ListCreateAPIView):
     queryset = CartItem.objects.all()
     serializer_class = CartItemSerializer
+
+class LandingPageView(generics.CreateAPIView):
+    def get(self, request):
+        context = {"message": "Welcome to the karma tecnologies!"}
+        return render(request, 'index.html', context)
 
 
 
