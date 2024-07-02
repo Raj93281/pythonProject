@@ -1,9 +1,9 @@
 from rest_framework import generics
 from django.shortcuts import render
-from .models import CustomUser, UserGroup, Event,EventInvitation,Product,CartItem
+from .models import CustomUser, UserGroup, Event,EventInvitation,Product,CartItem, Employee
 from rest_framework.response import Response
 from rest_framework import permissions
-from .serializers import CustomUserSerializer,UserGroupSerializer, EventSerializer, EventInvitationSerializer,ProductSerializer,CartItemSerializer
+from .serializers import CustomUserSerializer,UserGroupSerializer, EventSerializer, EventInvitationSerializer,ProductSerializer,CartItemSerializer,EmployeeSerializer
 
 class CustomUserListCreateView(generics.ListCreateAPIView):
     queryset = CustomUser.objects.all()
@@ -55,6 +55,47 @@ class LandingPageView(generics.CreateAPIView):
     def get(self, request):
         context = {"message": "Welcome to the karma tecnologies!"}
         return render(request, 'index.html', context)
+
+class empView(generics.ListCreateAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    def emp(request):
+        if request.method == "POST":
+            serializer = EmployeeForm(request.POST)
+            if serializer.is_valid():
+                try:
+                    serializer.save()
+                    return redirect('/show')
+                except:
+                    pass
+        else:
+            serializer = EmployeeSerializer()
+        return render(request,'index.html',{'form':form})
+class showdetailsView(generics.CreateAPIView):
+    serializer_class = EmployeeSerializer
+    def show(request):
+        employees = Employee.objects.all()
+        return render(request,"show.html",{'employees':employees})
+
+class editdetailsView(generics.CreateAPIView):
+    def edit(request, id):
+        employee = Employee.objects.get(id=id)
+        return render(request,'edit.html', {'employee':employee})
+
+class updatedetailsView(generics.UpdateAPIView):
+    def update(request, id):
+        employee = Employee.objects.get(id=id)
+        serializer = EmployeeForm(request.POST, instance = employee)
+        if serializer.is_valid():
+            serializer.save()
+            return redirect("/show")
+        return render(request, 'edit.html', {'employee': employee})
+
+class deletedetailsView(generics.DestroyAPIView):
+    def destroy(request, id):
+        employee = Employee.objects.get(id=id)
+        employee.delete()
+        return redirect("/show")
 
 
 

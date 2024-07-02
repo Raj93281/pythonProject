@@ -66,3 +66,11 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+
+class Employee(models.Model):
+    eid = models.CharField(max_length=20)
+    ename = models.CharField(max_length=100)
+    eemail = models.EmailField()
+    econtact = models.CharField(max_length=15)
+    class Meta:
+        db_table = "employee"
